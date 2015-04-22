@@ -1,0 +1,8 @@
+Makefile
+CMakeFiles
+CMakeCache.txt
+*.dtps
+*.a
+*.cmake
+.vagrant
+build
