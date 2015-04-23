@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'socket'
+require 'readline'
+
+socket = ::TCPSocket.new('localhost', 3400)
+
+while buffer = ::Readline.readline("> ", true)
+  break if buffer == 'exit'
+  unless buffer.empty?
+    socket.write(buffer + "\n")
+    puts socket.gets
+  end
+end
+
+socket.close

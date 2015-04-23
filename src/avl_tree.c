@@ -115,6 +115,37 @@ static avl_node_t * balance_node( avl_node_t * node ) {
   return node;
 }
 
+static avl_node_t * get_recur( avl_node_t * node, char * key ) {
+  if(node == NULL) {
+    return NULL;
+  }
+
+  int comparison = strcmp(node->key, key);
+
+  /* Matching */
+  if( comparison == 0 ) {
+    return node;
+  }
+
+  /* Walk down a specific branch */
+  if( comparison > 0) {
+    return get_recur( node->child_left, key );
+  }
+  else {
+    return get_recur( node->child_right, key );
+  }
+}
+
+void * avl_get( avl_tree_t * tree, void * key ) {
+  avl_node_t * node = get_recur( tree->head, key );
+
+  if( node != NULL ) {
+    return node->value;
+  } else {
+    return NULL;
+  }
+}
+
 /* I don't like this implementation, so fix it later */
 static avl_node_t * insert_recur( avl_node_t * node, char * key, void * value ) {
   /* Return new node if node is NULL */
@@ -141,15 +172,20 @@ static avl_node_t * insert_recur( avl_node_t * node, char * key, void * value ) 
 }
 
 void avl_insert( avl_tree_t * tree, char * key, void * value, int value_size) {
-  /* Check to see if we already have the string */
-  if( avl_contains(tree, key) ) { return; }
-
   /* Copy key/ value because we can't use stack pointers */
   size_t length = strlen(key);
   char * m_key = malloc( sizeof(char) * (length + 1) );
   strcpy(m_key, key);
-  char * m_value = malloc( value_size );
+  void * m_value = malloc( value_size );
   memcpy(m_value, value, value_size);
+
+  /* Check to see if we already have the string */
+  avl_node_t * node = get_recur( tree->head, key );
+  if(node != NULL) {
+    free(node->value);
+    node->value = m_value;
+    return;
+  }
 
   tree->head = insert_recur(tree->head, m_key, m_value);
   tree->count++;
@@ -221,37 +257,6 @@ void avl_delete( avl_tree_t * tree, char * key ) {
   if(tree->head == NULL) return;
 
   tree->head = delete_recur(tree, tree->head, key);
-}
-
-static avl_node_t * get_recur( avl_node_t * node, char * key ) {
-  if(node == NULL) {
-    return NULL;
-  }
-
-  int comparison = strcmp(node->key, key);
-
-  /* Matching */
-  if( comparison == 0 ) {
-    return node;
-  }
-
-  /* Walk down a specific branch */
-  if( comparison > 0) {
-    return get_recur( node->child_left, key );
-  }
-  else {
-    return get_recur( node->child_right, key );
-  }
-}
-
-void * avl_get( avl_tree_t * tree, void * key ) {
-  avl_node_t * node = get_recur( tree->head, key );
-
-  if( node != NULL ) {
-    return node->value;
-  } else {
-    return NULL;
-  }
 }
 
 size_t avl_contains( avl_tree_t * tree, char * key ) {

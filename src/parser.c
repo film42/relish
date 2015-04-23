@@ -54,7 +54,7 @@ static int set_value(command_t * command, char * message, int index) {
     char * value_buffer = (char *)malloc(sizeof(char) * (value_length + 1));
     strncpy(value_buffer, (message + index), value_length);
     command->value = value_buffer;
-    printf("value buffer: [%d, %d : %d] '%s'\n", index, next_space, value_length, value_buffer);
+    // printf("value buffer: [%d, %d : %d] '%s'\n", index, next_space, value_length, value_buffer);
     return next_space + 1;
   }
 }
