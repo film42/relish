@@ -172,10 +172,7 @@ static avl_node_t * insert_recur( avl_node_t * node, char * key, void * value ) 
 }
 
 void avl_insert( avl_tree_t * tree, char * key, void * value, int value_size) {
-  /* Copy key/ value because we can't use stack pointers */
-  size_t length = strlen(key);
-  char * m_key = malloc( sizeof(char) * (length + 1) );
-  strcpy(m_key, key);
+  /* Copy value because we can't use stack pointers */
   void * m_value = malloc( value_size );
   memcpy(m_value, value, value_size);
 
@@ -186,6 +183,11 @@ void avl_insert( avl_tree_t * tree, char * key, void * value, int value_size) {
     node->value = m_value;
     return;
   }
+
+  /* Copy key because we can't use stack pointers */
+  size_t length = strlen(key);
+  char * m_key = malloc( sizeof(char) * (length + 1) );
+  strcpy(m_key, key);
 
   tree->head = insert_recur(tree->head, m_key, m_value);
   tree->count++;

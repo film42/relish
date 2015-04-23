@@ -1,4 +1,4 @@
-RELISH
+Relish
 ======
 
 Relish is a crappy attempt at making a cheap redis clone.
