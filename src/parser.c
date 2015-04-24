@@ -5,6 +5,9 @@ static int set_action(command_t * command, char * message) {
   if(strncmp(message, "get", 3) == 0) {
     command->action = GET;
     return 4;
+  } else if(strncmp(message, "key", 3) == 0) {
+    command->action = GET;
+    return 4;
   } else if(strncmp(message, "set", 3) == 0) {
     command->action = INSERT;
     return 4;

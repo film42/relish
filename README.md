@@ -18,15 +18,15 @@ Then use the CLI to send commands:
 
 ```
 $ ./bin/relish-cli
-> get name
+> key name
 (null)
 > set name relish
 (ok!)
-> get name
+> key name
 relish
 > del name relish
 (ok!)
-> get name relish
+> key name
 (null)
 >
 ```
