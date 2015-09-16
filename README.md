@@ -24,7 +24,7 @@ $ ./bin/relish-cli
 (ok!)
 > key name
 relish
-> del name relish
+> del name
 (ok!)
 > key name
 (null)
